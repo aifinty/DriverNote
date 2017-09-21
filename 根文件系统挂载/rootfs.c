@@ -1,62 +1,62 @@
 
-	¸ùÎÄ¼şÏµÍ³ÖÆ×÷Óë¹ÒÔØ
+	æ ¹æ–‡ä»¶ç³»ç»Ÿåˆ¶ä½œä¸æŒ‚è½½
 	
-	1. busybox±àÒë£¬ºÍÔËĞĞĞèÒªµÄ¿â¿½±´
-	2. Æô¶¯½Å±¾µÄÖÆ×÷£¬ºÍÉè±¸½ÚµãµÄ´´½¨
+	1. busyboxç¼–è¯‘ï¼Œå’Œè¿è¡Œéœ€è¦çš„åº“æ‹·è´
+	2. å¯åŠ¨è„šæœ¬çš„åˆ¶ä½œï¼Œå’Œè®¾å¤‡èŠ‚ç‚¹çš„åˆ›å»º
 	
 	/**********************************************************************************************/
-		1.1 ÉèÖÃ /etc/inittab ÎÄ¼ş£¬ËüÊÇÏµÍ³¹ÒÔØÎÄ¼şÏµÍ³Ö´ĞĞµÄµÚÒ»¸ö½Å±¾£¬busyboxÔÚÃ»ÓĞÕâ¸ö½Å±¾Çé¿öÏÂÖ´ĞĞÄ¬ÈÏµÄ½Å±¾³ÌĞò
+		1.1 è®¾ç½® /etc/inittab æ–‡ä»¶ï¼Œå®ƒæ˜¯ç³»ç»ŸæŒ‚è½½æ–‡ä»¶ç³»ç»Ÿæ‰§è¡Œçš„ç¬¬ä¸€ä¸ªè„šæœ¬ï¼Œbusyboxåœ¨æ²¡æœ‰è¿™ä¸ªè„šæœ¬æƒ…å†µä¸‹æ‰§è¡Œé»˜è®¤çš„è„šæœ¬ç¨‹åº
 		
-		Ã¿¸öÌõÄ¿µÄ¸ñÊ½:<id>:<runlevels>:<action>:<process>
+		æ¯ä¸ªæ¡ç›®çš„æ ¼å¼:<id>:<runlevels>:<action>:<process>
 			
-			<id>: Ã»ÓĞÊ²Ã´Êµ¼ÊÒâÒå¡£Ò»°ãÓÃÓÚÖ¸¶¨ÌØ¶¨µÄ³ÌĞòÔËĞĞµÄÖÕ¶Ë
-			<runlevels>: ÍêÈ«±»ºöÂÔ
-			<action>: ÓĞĞ§µÄÈ¡ÖµÓĞ£ºsysinit, respawn, askfirst, wait, once, restart, ctrlaltdel, and shutdown.	
-			<process>: ĞèÒªÖ´ĞĞµÄÃüÁî
+			<id>: æ²¡æœ‰ä»€ä¹ˆå®é™…æ„ä¹‰ã€‚ä¸€èˆ¬ç”¨äºæŒ‡å®šç‰¹å®šçš„ç¨‹åºè¿è¡Œçš„ç»ˆç«¯
+			<runlevels>: å®Œå…¨è¢«å¿½ç•¥
+			<action>: æœ‰æ•ˆçš„å–å€¼æœ‰ï¼šsysinit, respawn, askfirst, wait, once, restart, ctrlaltdel, and shutdown.	
+			<process>: éœ€è¦æ‰§è¡Œçš„å‘½ä»¤
 			
-			inittab ¾ßÌåÄÚÈİ£º
+			inittab å…·ä½“å†…å®¹ï¼š
 			::sysinit:/etc/init.d/rcS  
 			::respawn:-/bin/sh
 			tty2::askfirst:-/bin/sh		
 			::ctrlaltdel:/bin/umount -a -r	
 			
-			// Æô¶¯ÃüÁî½âÊÍ
-			::sysinit:/etc/init.d/rcS	 // Ö´ĞĞ /etc/init.d/rcS ½Å±¾
-			tty2::askfirst:-/bin/sh 	//Æô¶¯tty2×÷ÎªÖÕ¶Ë£¬ ¡°-¡± µÄÒâË¼Ê¹ÓÃµÇÂ¼µÄshell
-			// ÔÚÖØÆôÖ®Ç°¸Ã×öµÄÊÂ
+			// å¯åŠ¨å‘½ä»¤è§£é‡Š
+			::sysinit:/etc/init.d/rcS	 // æ‰§è¡Œ /etc/init.d/rcS è„šæœ¬
+			tty2::askfirst:-/bin/sh 	//å¯åŠ¨tty2ä½œä¸ºç»ˆç«¯ï¼Œ â€œ-â€ çš„æ„æ€ä½¿ç”¨ç™»å½•çš„shell
+			// åœ¨é‡å¯ä¹‹å‰è¯¥åšçš„äº‹
 			::ctrlaltdel:/sbin/reboot
 			::shutdown:/bin/umount -a -r
 			::shutdown:/sbin/swapoff -a
 				
 	/**********************************************************************************************/			
 		
-		¶ÔÓÚrcS½Å±¾ÄÚÈİ£º
+		å¯¹äºrcSè„šæœ¬å†…å®¹ï¼š
 	
 			#! /bin/sh
 				/bin/mount -a
 				
-				// ÊµÏÖÉè±¸µÄÍêÈ«¹ÒÔØ
+				// å®ç°è®¾å¤‡çš„å®Œå…¨æŒ‚è½½
 			  // you need to have /sys mounted before executing mdev
 			 echo /sbin/mdev > /proc/sys/kernel/hotplug  // instruct the kernel to execute /sbin/mdev whenever a 
 			 																						// device is added or removed
 			 mdev -s  // seed /dev with all the device nodes that were created
-		   // Ìí¼Ó²¿·Ö
+		   // æ·»åŠ éƒ¨åˆ†
 			 mount -t tmpfs -o size=64k,mode=0755 tmpfs /dev
 			 mkdir /dev/pts
 			 mount -t devpts devpts /dev/pts
 		
-		¸Ã½Å±¾¾ÍÖ»Ö´ĞĞµÚÒ»¸öÃüÁî mount -a ¸ÃÃüÁî»áÈ¥Ö´ĞĞ /etc/fstabÎÄ¼şÄÚÈİ£¬Ö÷ÒªÊÇÊµÏÖÉè±¸ÎÄ¼şµÄ¹ÒÔØ
+		è¯¥è„šæœ¬å°±åªæ‰§è¡Œç¬¬ä¸€ä¸ªå‘½ä»¤ mount -a è¯¥å‘½ä»¤ä¼šå»æ‰§è¡Œ /etc/fstabæ–‡ä»¶å†…å®¹ï¼Œä¸»è¦æ˜¯å®ç°è®¾å¤‡æ–‡ä»¶çš„æŒ‚è½½
 		
 			#device mount-point type options dump fsck order
-			proc /proc proc defaults 	0 0 // ĞèÒª¹ÒÔØ
-			tmpfs /tmp tmpfs defaults 0 0 // ĞèÒªÄÚºË¶ÔtmpfsµÄÖ§³Ö
-			sysfs /sys sysfs defaults 0 0 // ±ØĞë¹ÒÔØ
-			tmpfs /dev tmpfs defaults 0 0 // ĞèÒªÄÚºË¶ÔtmpfsµÄÖ§³Ö
+			proc /proc proc defaults 	0 0 // éœ€è¦æŒ‚è½½
+			tmpfs /tmp tmpfs defaults 0 0 // éœ€è¦å†…æ ¸å¯¹tmpfsçš„æ”¯æŒ
+			sysfs /sys sysfs defaults 0 0 // å¿…é¡»æŒ‚è½½
+			tmpfs /dev tmpfs defaults 0 0 // éœ€è¦å†…æ ¸å¯¹tmpfsçš„æ”¯æŒ
 		
-		// Ö´ĞĞÍê±ÏÕâĞ©ÎÄ¼şÏµÍ³¹ÒÔØ£¬»á¼ÌĞø»Øµ½rcS½Å±¾¼ÌĞøÖ´ĞĞÃüÁî¡£
+		// æ‰§è¡Œå®Œæ¯•è¿™äº›æ–‡ä»¶ç³»ç»ŸæŒ‚è½½ï¼Œä¼šç»§ç»­å›åˆ°rcSè„šæœ¬ç»§ç»­æ‰§è¡Œå‘½ä»¤ã€‚
 		
 	/**********************************************************************************************/
-		×îºóÆô¶¯bash£¬»áÖ´ĞĞ /etc/profile ½Å±¾Ö÷ÒªÓÃÓÚÉèÖÃÒ»Ğ©»·¾³±äÁ¿¡£
+		æœ€åå¯åŠ¨bashï¼Œä¼šæ‰§è¡Œ /etc/profile è„šæœ¬ä¸»è¦ç”¨äºè®¾ç½®ä¸€äº›ç¯å¢ƒå˜é‡ã€‚
 		#!/bin/sh
 			export HOSTNAME=JZ2440
 			export USER=root

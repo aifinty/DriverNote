@@ -1,29 +1,29 @@
 
-	ÖÐ¶ÏÏµÍ³ÌåÏµ½á¹¹
+	ä¸­æ–­ç³»ç»Ÿä½“ç³»ç»“æž„
 	
-	LinuxÄÚºË·¢ÉúÖÐ¶Ï´¦ÀíÁ÷³Ì£º
-		1.·¢ÉúÖÐ¶ÏµÄÊ±ºò£¬cpu»áµ÷µ½Ö¸¶¨µÄÒì³£ÏòÁ¿±íÖÐ¡£
-		2.´ÓÒì³£ÏòÁ¿±íÖÐ£¬»áµ÷ÓÃÖÐ¶Ï´¦ÀíµÄ×ÜÈë¿Úº¯Êý asm_do_IRQ
-		3.¸ù¾Ý»ñµÃÖÐ¶ÏºÅ»ñÈ¡µÃµ½ irq_desc[]Êý×éÖÐ»ñµÃÒ»¸ö struct irq_desc ½á¹¹ÌåÏî
-		4.´Ó struct irq_desc ½á¹¹ÌåÏî»ñÈ¡ handl_irq º¯Êý£¬½øÐÐÖÐ¶ÏµÄÒ»Ð©²Ù×÷£¬Çå³ýÖÐ¶Ï±êÖ¾Î»µÈ
-		5.Ö´ÐÐÍ¨¹ý request_irq() º¯Êý×¢²áµÄÖÐ¶Ï´¦Àíº¯Êý
+	Linuxå†…æ ¸å‘ç”Ÿä¸­æ–­å¤„ç†æµç¨‹ï¼š
+		1.å‘ç”Ÿä¸­æ–­çš„æ—¶å€™ï¼Œcpuä¼šè°ƒåˆ°æŒ‡å®šçš„å¼‚å¸¸å‘é‡è¡¨ä¸­ã€‚
+		2.ä»Žå¼‚å¸¸å‘é‡è¡¨ä¸­ï¼Œä¼šè°ƒç”¨ä¸­æ–­å¤„ç†çš„æ€»å…¥å£å‡½æ•° asm_do_IRQ
+		3.æ ¹æ®èŽ·å¾—ä¸­æ–­å·èŽ·å–å¾—åˆ° irq_desc[]æ•°ç»„ä¸­èŽ·å¾—ä¸€ä¸ª struct irq_desc ç»“æž„ä½“é¡¹
+		4.ä»Ž struct irq_desc ç»“æž„ä½“é¡¹èŽ·å– handl_irq å‡½æ•°ï¼Œè¿›è¡Œä¸­æ–­çš„ä¸€äº›æ“ä½œï¼Œæ¸…é™¤ä¸­æ–­æ ‡å¿—ä½ç­‰
+		5.æ‰§è¡Œé€šè¿‡ request_irq() å‡½æ•°æ³¨å†Œçš„ä¸­æ–­å¤„ç†å‡½æ•°
 
-	ÄÚºËÖÐ¹ÜÀíÖÐ¶ÏµÄÊÇÒ»¸ö struct irq_desc ÀàÐÍµÄ½á¹¹ÌåÊý×é£¬ËüÊÇÒ»¸öÈ«¾ÖµÄÊý×é¡£ÖÐ¶ÏºÅ¶ÔÓ¦ÁËÊý×éµÄÏÂ±ê¡£ 
-	struct irq_desc ½á¹¹Ìå°üº¬ÁËÁ½¸ö½á¹¹Ìå£¨¶ÔÏó£©£º
+	å†…æ ¸ä¸­ç®¡ç†ä¸­æ–­çš„æ˜¯ä¸€ä¸ª struct irq_desc ç±»åž‹çš„ç»“æž„ä½“æ•°ç»„ï¼Œå®ƒæ˜¯ä¸€ä¸ªå…¨å±€çš„æ•°ç»„ã€‚ä¸­æ–­å·å¯¹åº”äº†æ•°ç»„çš„ä¸‹æ ‡ã€‚ 
+	struct irq_desc ç»“æž„ä½“åŒ…å«äº†ä¸¤ä¸ªç»“æž„ä½“ï¼ˆå¯¹è±¡ï¼‰ï¼š
 	
 		struct irq_desc{
 				...
-				struct irq_data {struct irq_chip		*chip;...} // struct irq_chip Ó²¼þµ×²ã²Ù×÷£¬Ò»°ã³§¼ÒÊµÏÖ
-				irq_flow_handler_t	handle_irq;	// ÖÐ¶Ï´¦ÀíÊ±ºòµÄÓ²¼þ²Ù×÷£¬Ò»°ã³§¼ÒÊµÏÖ£¬²¢»áµ÷ÓÃÍ¨¹ý
-																				// request_irq() º¯Êý×¢²áµÄÖÐ¶Ï´¦Àíº¯Êý
-				struct irqaction   // ÓÃ»§Í¨¹ý request_irq() ½øÐÐ×¢²áµÄ½á¹¹Ìå
+				struct irq_data {struct irq_chip		*chip;...} // struct irq_chip ç¡¬ä»¶åº•å±‚æ“ä½œï¼Œä¸€èˆ¬åŽ‚å®¶å®žçŽ°
+				irq_flow_handler_t	handle_irq;	// ä¸­æ–­å¤„ç†æ—¶å€™çš„ç¡¬ä»¶æ“ä½œï¼Œä¸€èˆ¬åŽ‚å®¶å®žçŽ°ï¼Œå¹¶ä¼šè°ƒç”¨é€šè¿‡
+																				// request_irq() å‡½æ•°æ³¨å†Œçš„ä¸­æ–­å¤„ç†å‡½æ•°
+				struct irqaction   // ç”¨æˆ·é€šè¿‡ request_irq() è¿›è¡Œæ³¨å†Œçš„ç»“æž„ä½“
 				...
 			}
 		
 		
-		³§¼Ò¶Ô struct irq_chip ºÍirq_flow_handler_t	handle_irqµÄ×¢²á£º
+		åŽ‚å®¶å¯¹ struct irq_chip å’Œirq_flow_handler_t	handle_irqçš„æ³¨å†Œï¼š
 	/************************************************************************************************/
-		// ÉèÖÃ struct irq_chip ½á¹¹Ìå
+		// è®¾ç½® struct irq_chip ç»“æž„ä½“
 		static struct irq_chip s3c_irq_eint0t4 = {
 			.name		= "s3c-ext0",
 			.irq_ack	= s3c_irq_ack,
@@ -33,11 +33,11 @@
 			.irq_set_type	= s3c_irqext_type,
 		};
 		
-		irq_set_chip_and_handler(irqno, &s3c_irqext_chip,handle_edge_irq); // ×¢²á½á¹¹ÌåºÍ´¦Àíº¯Êý
+		irq_set_chip_and_handler(irqno, &s3c_irqext_chip,handle_edge_irq); // æ³¨å†Œç»“æž„ä½“å’Œå¤„ç†å‡½æ•°
 		==>
 		irq_set_chip_and_handler_name(irq, chip, handle, NULL);
 		==>
-		irq_set_chip(irq, chip); // ×¢²áchip½á¹¹Ìå
+		irq_set_chip(irq, chip); // æ³¨å†Œchipç»“æž„ä½“
 		{
 			==>
 			struct irq_desc *desc = irq_get_desc_lock(irq, &flags, 0);
@@ -47,39 +47,39 @@
 				==>
 				irq_to_desc(irq);
 				==>
-				#define irq_to_desc(irq)	(&irq_desc[irq]) // ÒÔÖÐ¶ÏºÅÎªÏÂ±êÈ¡µÃirq_desc[] Êý×éÖÐ¶ÔÓ¦Ïî
+				#define irq_to_desc(irq)	(&irq_desc[irq]) // ä»¥ä¸­æ–­å·ä¸ºä¸‹æ ‡å–å¾—irq_desc[] æ•°ç»„ä¸­å¯¹åº”é¡¹
 			}
-			desc->irq_data.chip = chip; // ¸³Öµ chip 
+			desc->irq_data.chip = chip; // èµ‹å€¼ chip 
 			
 		}
-		__irq_set_handler(irq, handle, 0, name);// ×¢²á´¦Àíº¯Êý
+		__irq_set_handler(irq, handle, 0, name);// æ³¨å†Œå¤„ç†å‡½æ•°
 		{
 			==>
 			struct irq_desc *desc = irq_get_desc_buslock(irq, &flags, 0);
 			{
-				... //ÓëÉÏÃæÏàÍ¬
+				... //ä¸Žä¸Šé¢ç›¸åŒ
 			}
 			desc->handle_irq = handle;
 			
 		}
 		
-		// ÕâÑù¾ÍÍê³ÉÁËÖÐ¶ÏµÄµ×²ãÓ²¼þ²Ù×÷µÄ×¢²á
+		// è¿™æ ·å°±å®Œæˆäº†ä¸­æ–­çš„åº•å±‚ç¡¬ä»¶æ“ä½œçš„æ³¨å†Œ
 	/************************************************************************************************/	
 	
 	
-	ÖÐ¶Ï·¢ÉúÖ´ÐÐÁ÷³Ì£º
+	ä¸­æ–­å‘ç”Ÿæ‰§è¡Œæµç¨‹ï¼š
 	
 	/************************************************************************************************/
-	asm_do_IRQ(unsigned int irq, struct pt_regs *regs) // ÖÐ¶Ïº¯Êý»ã±àµ½CÓïÑÔµÄµÚÒ»¸öº¯Êý
+	asm_do_IRQ(unsigned int irq, struct pt_regs *regs) // ä¸­æ–­å‡½æ•°æ±‡ç¼–åˆ°Cè¯­è¨€çš„ç¬¬ä¸€ä¸ªå‡½æ•°
 	==>
 	handle_IRQ(irq, regs);
 	==>
 	generic_handle_irq(irq);
 	==>
-	struct irq_desc *desc = irq_to_desc(irq); // ¸ù¾ÝÖÐ¶ÏºÅ»ñÈ¡desc
+	struct irq_desc *desc = irq_to_desc(irq); // æ ¹æ®ä¸­æ–­å·èŽ·å–desc
 	generic_handle_irq_desc(irq, desc);
 	==>
-	desc->handle_irq(irq, desc); // µ÷ÓÃdescÖÐµÄhandle_irqº¯Êý£¬¸Ãº¯Êý±»³§¼ÒÊµÏÖ£¬²¢×¢²á
+	desc->handle_irq(irq, desc); // è°ƒç”¨descä¸­çš„handle_irqå‡½æ•°ï¼Œè¯¥å‡½æ•°è¢«åŽ‚å®¶å®žçŽ°ï¼Œå¹¶æ³¨å†Œ
 	==>
 	void handle_edge_irq(unsigned int irq, struct irq_desc *desc)
 	==>
@@ -87,25 +87,25 @@
 	==>
 	ret = handle_irq_event_percpu(desc, action); 
 	==>
-	res = action->handler(irq, action->dev_id);// µ÷ÓÃÍ¨¹ýrequest_irq()×¢²áµÄº¯Êý
+	res = action->handler(irq, action->dev_id);// è°ƒç”¨é€šè¿‡request_irq()æ³¨å†Œçš„å‡½æ•°
 	
  /************************************************************************************************/					
 	
-	Çý¶¯ÖÐ×¢²áÖÐ¶ÏÁ÷³Ì£º
+	é©±åŠ¨ä¸­æ³¨å†Œä¸­æ–­æµç¨‹ï¼š
 	
 	request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,const char *name, void *dev) 
-	// Çý¶¯º¯Êýµ÷ÓÃ request_irq À´×¢²áÖÐ¶Ï
+	// é©±åŠ¨å‡½æ•°è°ƒç”¨ request_irq æ¥æ³¨å†Œä¸­æ–­
 	==>
 	request_threaded_irq(irq, handler, NULL, flags, name, dev);
 	==>
-	desc = irq_to_desc(irq); // »ñÈ¡desc½á¹¹Ìå
-	action->handler = handler; //ÉèÖÃaction½á¹¹Ìå
+	desc = irq_to_desc(irq); // èŽ·å–descç»“æž„ä½“
+	action->handler = handler; //è®¾ç½®actionç»“æž„ä½“
 	==>
-	__setup_irq(irq, desc, action); // ×¢²áaction
-	// ÖÐ¶Ï×¢²áÍê±Ï
+	__setup_irq(irq, desc, action); // æ³¨å†Œaction
+	// ä¸­æ–­æ³¨å†Œå®Œæ¯•
 /************************************************************************************************/
 
-	°´¼üÖÐ¶ÏÊµÏÖÊµÀý£º
+	æŒ‰é”®ä¸­æ–­å®žçŽ°å®žä¾‹ï¼š
 	
 
 

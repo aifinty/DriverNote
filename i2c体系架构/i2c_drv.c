@@ -1,18 +1,18 @@
-	i2cÉè±¸Çı¶¯ÊµÏÖ²½Öè£º
-	1. ÊµÏÖIICÉè±¸µÄÉè±¸Ê÷µÄ±àĞ´
-	2. ÊµÏÖIICÉè±¸Çı¶¯µÄ±àĞ´
-		×¢Òâ£ºÉè±¸Ê÷ÖĞµÄÃû×ÖĞèÒªºÍÇı¶¯ÖĞµÄÃû×ÖÆ¥Åä¡£
+	i2cè®¾å¤‡é©±åŠ¨å®ç°æ­¥éª¤ï¼š
+	1. å®ç°IICè®¾å¤‡çš„è®¾å¤‡æ ‘çš„ç¼–å†™
+	2. å®ç°IICè®¾å¤‡é©±åŠ¨çš„ç¼–å†™
+		æ³¨æ„ï¼šè®¾å¤‡æ ‘ä¸­çš„åå­—éœ€è¦å’Œé©±åŠ¨ä¸­çš„åå­—åŒ¹é…ã€‚
 		
-	Éè±¸Ê÷µÄÊµÏÖ£º
+	è®¾å¤‡æ ‘çš„å®ç°ï¼š
 			   
-		i2c@138B0000 {¡¡// ¶ÔIICÖ÷»ú¿ØÖÆÆ÷µÄÃèÊö£¬ÕâĞ©Êı¾İ±»IIC×ÜÏßÇı¶¯³ÌĞòÊ¹ÓÃ£¬Ò²¾ÍÊÇ³§¼ÒµÄÇı¶¯³ÌĞòÊ¹ÓÃ
+		i2c@138B0000 {ã€€// å¯¹IICä¸»æœºæ§åˆ¶å™¨çš„æè¿°ï¼Œè¿™äº›æ•°æ®è¢«IICæ€»çº¿é©±åŠ¨ç¨‹åºä½¿ç”¨ï¼Œä¹Ÿå°±æ˜¯å‚å®¶çš„é©±åŠ¨ç¨‹åºä½¿ç”¨
          samsung,i2c-sda-delay = <100>;
          samsung,i2c-max-bus-freq = <20000>;  // 20k
          pinctrl-0 = <&i2c5_bus>;
          pinctrl-names = "default";
-         status = "okay";   // ×´Ì¬¿ª¹Ø
+         status = "okay";   // çŠ¶æ€å¼€å…³
  
-         mpu6050-3-axis@68 { // ×Ó½Úµã£¬±íÊ¾¹Ò½ÓÔÚÖ÷»ú¿ØÖÆÆ÷ÉÏ£¬±»i2c_coreºËĞÄÊ¹ÓÃ£¬Éú³Éstruct i2c_client½Úµã                                                                                      
+         mpu6050-3-axis@68 { // å­èŠ‚ç‚¹ï¼Œè¡¨ç¤ºæŒ‚æ¥åœ¨ä¸»æœºæ§åˆ¶å™¨ä¸Šï¼Œè¢«i2c_coreæ ¸å¿ƒä½¿ç”¨ï¼Œç”Ÿæˆstruct i2c_clientèŠ‚ç‚¹                                                                                      
              compatible ="invensense,mpu6050";
              reg = <0x68>;
              interrupt-parent = <&gpx3>;
@@ -20,64 +20,64 @@
          };
      };
 		
-	ÔÚÇı¶¯º¯ÊıÖĞ£¬µ±Æ¥Åä³É¹¦£¬ÄÚºË¾Í»áµ÷ÓÃÇı¶¯µÄprobeº¯Êı£º
-	int (*probe)(struct i2c_client *, const struct i2c_device_id *); // Ì½²âº¯Êı
-	ÄÚºËÖĞÉè±¸µÄµØÖ·£¬IIC×ÜÏßÊı¾İ´«ÊäµÄº¯Êı¶¼±»ÄÚºË´ò°üµ½struct i2c_client½á¹¹ÌåÖĞ£¬ÎÒÃÇ»ñµÃ¸Ã½á¹¹Ìåºó±£³Ö¸Ã½á¹¹Ìå
-	µØÖ·£¬ÎÒÃÇ×Ô¼ºÉú³ÉÒ»¸ö×Ö·ûÉè±¸²¢ÊµÏÖ×Ö·ûÉè±¸µÄ²Ù×÷¼¯ºÏ£¬²Ù×÷¼¯ºÏÖĞ×îÖÕµ÷ÓÃstruct i2c_clientÌá¹©µÄµØÖ·ºÍ²Ù×÷º¯Êı
-	ÊµÏÖÊı¾İ½»»¥¡£ÎªÁËÊµÏÖÊı¾İµÄÍ³Ò»£¬ĞèÒª°ÑÎÒÃÇµÄÊı¾İ´ò°üµ½struct i2c_msg½á¹¹Ìå½øĞĞ·¢ËÍ¡£
+	åœ¨é©±åŠ¨å‡½æ•°ä¸­ï¼Œå½“åŒ¹é…æˆåŠŸï¼Œå†…æ ¸å°±ä¼šè°ƒç”¨é©±åŠ¨çš„probeå‡½æ•°ï¼š
+	int (*probe)(struct i2c_client *, const struct i2c_device_id *); // æ¢æµ‹å‡½æ•°
+	å†…æ ¸ä¸­è®¾å¤‡çš„åœ°å€ï¼ŒIICæ€»çº¿æ•°æ®ä¼ è¾“çš„å‡½æ•°éƒ½è¢«å†…æ ¸æ‰“åŒ…åˆ°struct i2c_clientç»“æ„ä½“ä¸­ï¼Œæˆ‘ä»¬è·å¾—è¯¥ç»“æ„ä½“åä¿æŒè¯¥ç»“æ„ä½“
+	åœ°å€ï¼Œæˆ‘ä»¬è‡ªå·±ç”Ÿæˆä¸€ä¸ªå­—ç¬¦è®¾å¤‡å¹¶å®ç°å­—ç¬¦è®¾å¤‡çš„æ“ä½œé›†åˆï¼Œæ“ä½œé›†åˆä¸­æœ€ç»ˆè°ƒç”¨struct i2c_clientæä¾›çš„åœ°å€å’Œæ“ä½œå‡½æ•°
+	å®ç°æ•°æ®äº¤äº’ã€‚ä¸ºäº†å®ç°æ•°æ®çš„ç»Ÿä¸€ï¼Œéœ€è¦æŠŠæˆ‘ä»¬çš„æ•°æ®æ‰“åŒ…åˆ°struct i2c_msgç»“æ„ä½“è¿›è¡Œå‘é€ã€‚
 	
-	Çı¶¯ÖĞÉæ¼°µÄ½á¹¹ÌåÓĞ£º
+	é©±åŠ¨ä¸­æ¶‰åŠçš„ç»“æ„ä½“æœ‰ï¼š
 	/***************************************************************************************/
-	/* i2c_driver ½á¹¹Ìå ĞèÒªÎÒÃÇÌî³ä²¢×¢²á */
+	/* i2c_driver ç»“æ„ä½“ éœ€è¦æˆ‘ä»¬å¡«å……å¹¶æ³¨å†Œ */
 	struct i2c_driver {
 			unsigned int class;
 			/* Standard driver model interfaces */
-			int (*probe)(struct i2c_client *, const struct i2c_device_id *); // Ì½²âº¯Êı
-			int (*remove)(struct i2c_client *);  // ÒÆ³ıº¯Êı
+			int (*probe)(struct i2c_client *, const struct i2c_device_id *); // æ¢æµ‹å‡½æ•°
+			int (*remove)(struct i2c_client *);  // ç§»é™¤å‡½æ•°
 
-			struct device_driver driver;  // Éè±¸Çı¶¯µÄ»ùÀà
-			const struct i2c_device_id *id_table;  // i2cÆ¥Åä±í
+			struct device_driver driver;  // è®¾å¤‡é©±åŠ¨çš„åŸºç±»
+			const struct i2c_device_id *id_table;  // i2cåŒ¹é…è¡¨
 
 			/* Device detection callback for automatic device creation */
 			int (*detect)(struct i2c_client *, struct i2c_board_info *);
 			const unsigned short *address_list;
-			struct list_head clients;  // ÄÚºËÑ­»·Ë«Á´±í
+			struct list_head clients;  // å†…æ ¸å¾ªç¯åŒé“¾è¡¨
 		};
 	
-		module_i2c_driver(xxx_drver);//×¢²áÇı¶¯£¬²¢ÊµÏÖÈë¿ÚºÍ³ö¿Úº¯Êı
+		module_i2c_driver(xxx_drver);//æ³¨å†Œé©±åŠ¨ï¼Œå¹¶å®ç°å…¥å£å’Œå‡ºå£å‡½æ•°
 	/***************************************************************************************/
-		/* i2c_client½á¹¹Ìå£¬IICÉè±¸µÄÊµÌå·´Ó³ */
+		/* i2c_clientç»“æ„ä½“ï¼ŒIICè®¾å¤‡çš„å®ä½“åæ˜  */
 		struct i2c_client {
 		unsigned short flags;		/* div., see below		*/
-		unsigned short addr;		/* 7Î»£¬´Ó»úµØÖ·£¬I2CÉè±¸µØÖ· */
+		unsigned short addr;		/* 7ä½ï¼Œä»æœºåœ°å€ï¼ŒI2Cè®¾å¤‡åœ°å€ */
 				
-		char name[I2C_NAME_SIZE];  // Éè±¸µÄÃû³Æ
-		struct i2c_adapter *adapter;	/* ÊÊÅäÆ÷ */
-		struct device dev;		/* Éè±¸µÄ»ùÀà	*/
-		int irq;			/*ÖĞ¶ÏºÅ	*/
-		struct list_head detected;  // ÄÚºËÑ­»·Ë«Á´±í
+		char name[I2C_NAME_SIZE];  // è®¾å¤‡çš„åç§°
+		struct i2c_adapter *adapter;	/* é€‚é…å™¨ */
+		struct device dev;		/* è®¾å¤‡çš„åŸºç±»	*/
+		int irq;			/*ä¸­æ–­å·	*/
+		struct list_head detected;  // å†…æ ¸å¾ªç¯åŒé“¾è¡¨
 	};
 	
 	/***************************************************************************************/
 	  
-		/* IICÊÊÅäÆ÷,¶ÔIICÖ÷»ú¿ØÖÆÆ÷µÄÊµÌå·´Ó³ */
+		/* IICé€‚é…å™¨,å¯¹IICä¸»æœºæ§åˆ¶å™¨çš„å®ä½“åæ˜  */
 	struct i2c_adapter {
 		struct module *owner;
 		unsigned int class;		  /* classes to allow probing for */
-		const struct i2c_algorithm *algo; /* ·ÃÎÊ×ÜÏßµÄËã·¨ */
+		const struct i2c_algorithm *algo; /* è®¿é—®æ€»çº¿çš„ç®—æ³• */
 
-		int timeout;			/*³¬Ê±Ê±¼äÖµ */
-		int retries;          // ÖØ´«
+		int timeout;			/*è¶…æ—¶æ—¶é—´å€¼ */
+		int retries;          // é‡ä¼ 
 		struct device dev;		/* the adapter device */
         ...
 	};	
 	
 	/***************************************************************************************/	
 		
-		/* IICÖ÷»ú¿ØÖÆÆ÷Êı¾İÊÕ·¢²Ù×÷¼¯ºÏ */	
+		/* IICä¸»æœºæ§åˆ¶å™¨æ•°æ®æ”¶å‘æ“ä½œé›†åˆ */	
 		struct i2c_algorithm {
 
-		// Êı¾İ´«Êä
+		// æ•°æ®ä¼ è¾“
 		int (*master_xfer)(struct i2c_adapter *adap, struct i2c_msg *msgs,
 				   int num);
 
@@ -87,10 +87,10 @@
 		
 	/***************************************************************************************/
 		
-		/* ÓÃÓÚÊı¾İ´ò°üµÄÏûÏ¢½á¹¹Ìå */	
+		/* ç”¨äºæ•°æ®æ‰“åŒ…çš„æ¶ˆæ¯ç»“æ„ä½“ */	
 		struct i2c_msg {
-		__u16 addr;	/* ´Ó»úµØÖ·£¬Ğ¾Æ¬µØÖ·			*/
-		__u16 flags;  // ¶Á£¨1£©£¬Ğ´£¨0£©±êÖ¾Î»
+		__u16 addr;	/* ä»æœºåœ°å€ï¼ŒèŠ¯ç‰‡åœ°å€			*/
+		__u16 flags;  // è¯»ï¼ˆ1ï¼‰ï¼Œå†™ï¼ˆ0ï¼‰æ ‡å¿—ä½
 	#define I2C_M_TEN		0x0010	/* this is a ten bit chip address */
 	#define I2C_M_RD		0x0001	/* read data, from slave to master */
 	#define I2C_M_STOP		0x8000	/* if I2C_FUNC_PROTOCOL_MANGLING */
@@ -99,22 +99,22 @@
 	#define I2C_M_IGNORE_NAK	0x1000	/* if I2C_FUNC_PROTOCOL_MANGLING */
 	#define I2C_M_NO_RD_ACK		0x0800	/* if I2C_FUNC_PROTOCOL_MANGLING */
 	#define I2C_M_RECV_LEN		0x0400	/* length will be first received byte */
-		__u16 len;		/* ÏûÏ¢µÄ³¤¶È				*/
-		__u8 *buf;		/* ÏûÏ¢µÄÕıÎÄ			*/
+		__u16 len;		/* æ¶ˆæ¯çš„é•¿åº¦				*/
+		__u8 *buf;		/* æ¶ˆæ¯çš„æ­£æ–‡			*/
 	};	
 	/***************************************************************************************/
 
-	µ½´ËÎÒÃÇ¾ÍÍê³ÉÁË¶ÔÇı¶¯µÄ±àĞ´£¬µ«ÊÇ×ÜÊÇÓĞµã¸Ğ¾õ²»°²£¬²»°²À´×ÔÓÚÄÚºËµÄstruct clientÊÇÈçºÎÉú³ÉµÄ£¿
-	Éè±¸Ê÷ÎªÊ²Ã´ÒªÕâÑùĞ´£¿
+	åˆ°æ­¤æˆ‘ä»¬å°±å®Œæˆäº†å¯¹é©±åŠ¨çš„ç¼–å†™ï¼Œä½†æ˜¯æ€»æ˜¯æœ‰ç‚¹æ„Ÿè§‰ä¸å®‰ï¼Œä¸å®‰æ¥è‡ªäºå†…æ ¸çš„struct clientæ˜¯å¦‚ä½•ç”Ÿæˆçš„ï¼Ÿ
+	è®¾å¤‡æ ‘ä¸ºä»€ä¹ˆè¦è¿™æ ·å†™ï¼Ÿ
 
-	ÓÉÓÚÓ²¼şĞÅÏ¢ÃèÊöÔÚÉè±¸Ê÷ÖĞ£¬ÎÒÃÇ¿ÉÖªi2c_client½Úµã¿Ï¶¨ÊµÔÚÆ½Ì¨Éè±¸Çı¶¯ÖĞÉú³ÉµÄ£¬Æ¥Åäµ½¸Ã½ÚµãµÄ¾ÍÖ»ÓĞ³§¼ÒµÄ
-	Çı¶¯ÁË¡£ÎÒÃÇÈ¥²é¿´³§¼ÒÇı¶¯£º
-	ÈıĞÇµÄi2cÇı¶¯º¯ÊıÔÚ drivers\i2\busse\i2c-s3c240.cÖĞ£º
+	ç”±äºç¡¬ä»¶ä¿¡æ¯æè¿°åœ¨è®¾å¤‡æ ‘ä¸­ï¼Œæˆ‘ä»¬å¯çŸ¥i2c_clientèŠ‚ç‚¹è‚¯å®šå®åœ¨å¹³å°è®¾å¤‡é©±åŠ¨ä¸­ç”Ÿæˆçš„ï¼ŒåŒ¹é…åˆ°è¯¥èŠ‚ç‚¹çš„å°±åªæœ‰å‚å®¶çš„
+	é©±åŠ¨äº†ã€‚æˆ‘ä»¬å»æŸ¥çœ‹å‚å®¶é©±åŠ¨ï¼š
+	ä¸‰æ˜Ÿçš„i2cé©±åŠ¨å‡½æ•°åœ¨ drivers\i2\busse\i2c-s3c240.cä¸­ï¼š
 	
-	/* Æ¥Åäµ½Éè±¸Ê÷£¬µ÷ÓÃs3c24xx_i2c_probeº¯Êı*/
+	/* åŒ¹é…åˆ°è®¾å¤‡æ ‘ï¼Œè°ƒç”¨s3c24xx_i2c_probeå‡½æ•°*/
 	static int s3c24xx_i2c_probe(struct platform_device *pdev)
 	===>
-	i2c_add_numbered_adapter(&i2c->adap);// ÉèÖÃºÃstruct adapter½á¹¹Ìå£¬´«µİÏÂÈ¥
+	i2c_add_numbered_adapter(&i2c->adap);// è®¾ç½®å¥½struct adapterç»“æ„ä½“ï¼Œä¼ é€’ä¸‹å»
 	===>
 	__i2c_add_numbered_adapter(adap);
 	===>
@@ -122,31 +122,31 @@
 	==>
 	of_i2c_register_devices(adap);
 	==>
-	struct i2c_board_info info = {}; // ¶¨Òå²¢ÉèÖÃstruct i2c_board_info½á¹¹Ìå
-	of_modalias_node(node, info.type, sizeof(info.type); // ¿½±´Éè±¸Ê÷compatibleÃû×Öµ½i2c_board_info½á¹¹ÌåÖĞ
-	addr = of_get_property(node, "reg", &len); // »ñÈ¡Éè±¸µØÖ·
-	info.addr = be32_to_cpup(addr); // ×ª»»ÎªCPU×Ö½ÚĞò
-	info.irq = irq_of_parse_and_map(node, 0); //»ñÈ¡ÖĞ¶Ï
+	struct i2c_board_info info = {}; // å®šä¹‰å¹¶è®¾ç½®struct i2c_board_infoç»“æ„ä½“
+	of_modalias_node(node, info.type, sizeof(info.type); // æ‹·è´è®¾å¤‡æ ‘compatibleåå­—åˆ°i2c_board_infoç»“æ„ä½“ä¸­
+	addr = of_get_property(node, "reg", &len); // è·å–è®¾å¤‡åœ°å€
+	info.addr = be32_to_cpup(addr); // è½¬æ¢ä¸ºCPUå­—èŠ‚åº
+	info.irq = irq_of_parse_and_map(node, 0); //è·å–ä¸­æ–­
 	info.of_node = of_node_get(node);
 	info.archdata = &dev_ad;
 	===>
-	i2c_new_device(adap, &info); // Éú³Éi2c_client²¢×¢²á£¬µ«ÊÇ²»¼ì²éÉè±¸ÊÇ·ñ´æÔÚÓÚ×ÜÏßÉÏ£¬Ò²¾ÍÊÇ×ÜÊÇ½øĞĞ×¢²á¡£
+	i2c_new_device(adap, &info); // ç”Ÿæˆi2c_clientå¹¶æ³¨å†Œï¼Œä½†æ˜¯ä¸æ£€æŸ¥è®¾å¤‡æ˜¯å¦å­˜åœ¨äºæ€»çº¿ä¸Šï¼Œä¹Ÿå°±æ˜¯æ€»æ˜¯è¿›è¡Œæ³¨å†Œã€‚
 	
-	ÎÒÃÇ·¢ÏÖ£¬ÔÚof_i2c_register_devices(adap);º¯ÊıÖĞ½âÎöÁËIICÖ÷»ú¿ØÖÆÆ÷ÀïÃæµÄ×Ó½Úµã£¬Ò»¹²½âÎöÁËÈı¸öÊı¾İ£º
-		compatible£ºÃû×Ö
-		reg£º				µØÖ·
-		irq£º				ÖĞ¶Ï
-	ËùÒÔÉè±¸Ê÷ÖĞÎÒÃÇµÄ×Ó½ÚµãµÄÊéĞ´ÔòÎª£º
+	æˆ‘ä»¬å‘ç°ï¼Œåœ¨of_i2c_register_devices(adap);å‡½æ•°ä¸­è§£æäº†IICä¸»æœºæ§åˆ¶å™¨é‡Œé¢çš„å­èŠ‚ç‚¹ï¼Œä¸€å…±è§£æäº†ä¸‰ä¸ªæ•°æ®ï¼š
+		compatibleï¼šåå­—
+		regï¼š				åœ°å€
+		irqï¼š				ä¸­æ–­
+	æ‰€ä»¥è®¾å¤‡æ ‘ä¸­æˆ‘ä»¬çš„å­èŠ‚ç‚¹çš„ä¹¦å†™åˆ™ä¸ºï¼š
 	mpu6050-3-axis@68 {                                                                                     
              compatible ="invensense,mpu6050";
              reg = <0x68>;
              interrupt-parent = <&gpx3>;
              interrupts = <3 2>;
    };
-   ÕıºÃÓëÖ®¶ÔÓ¦ÆğÀ´¡£
+   æ­£å¥½ä¸ä¹‹å¯¹åº”èµ·æ¥ã€‚
 	/***************************************************************************************/
 	
-	»ùÓÚIICÇı¶¯¿ò¼ÜÊµÀıMPU6050µÄÇı¶¯ÊµÏÖ£º
+	åŸºäºIICé©±åŠ¨æ¡†æ¶å®ä¾‹MPU6050çš„é©±åŠ¨å®ç°ï¼š
 	
 	#include <linux/init.h>
 	#include <linux/module.h>
@@ -187,7 +187,7 @@
 		}
 		
 		struct i2c_msg msgs[]={
-			{.addr = client->addr,.flags = 0,.len = 1,.buf = txbuf}, // Ğ´ÈëÊı¾İ
+			{.addr = client->addr,.flags = 0,.len = 1,.buf = txbuf}, // å†™å…¥æ•°æ®
 			{.addr = client->addr,.flags = I2C_M_RD,.len = 1,.buf = rxbuf},
 		};
 
@@ -223,7 +223,7 @@
 	}
 
 
-	static const struct file_operations fops={ // ÉèÖÃ×Ö·ûÉè±¸²Ù×÷¼¯ºÏ
+	static const struct file_operations fops={ // è®¾ç½®å­—ç¬¦è®¾å¤‡æ“ä½œé›†åˆ
 		.owner = THIS_MODULE,
 		.open = mpu6050_open,
 		.release = 	mpu6050_release,
@@ -233,41 +233,41 @@
 	static int mpu6050_probe(struct i2c_client *client, const struct i2c_device_id * id)
 	{
 		printk("mpu6050_probe.\n");
-		/* ÔÚi2c_busµÄÆ¥Åäº¯Êı£¬Æ¥Åä³É¹¦µ÷ÓÃ¸Ãº¯Êı£¬¸Ãº¯ÊıĞèÒªÊµÏÖ¶Ô
-		*	¶Ô×Ö·ûÉè±¸µÄ×¢²á£¬ºÍÉè±¸µÄ´´½¨¡£
+		/* åœ¨i2c_busçš„åŒ¹é…å‡½æ•°ï¼ŒåŒ¹é…æˆåŠŸè°ƒç”¨è¯¥å‡½æ•°ï¼Œè¯¥å‡½æ•°éœ€è¦å®ç°å¯¹
+		*	å¯¹å­—ç¬¦è®¾å¤‡çš„æ³¨å†Œï¼Œå’Œè®¾å¤‡çš„åˆ›å»ºã€‚
 		*/
 		int ret;
-		ret = alloc_chrdev_region(&mpu6050.devno, BASEMINOR, COUNT, "mpu6050"); // ·ÖÅäÒ»¸öÉè±¸ºÅ
+		ret = alloc_chrdev_region(&mpu6050.devno, BASEMINOR, COUNT, "mpu6050"); // åˆ†é…ä¸€ä¸ªè®¾å¤‡å·
 		if(ret){
 			printk(KERN_ERR "alloc_chrdev_region error.\n");
 			return ret;
 		}
-		mpu6050.cdev = cdev_alloc(); // ·ÖÅä×Ö·ûÉè±¸
+		mpu6050.cdev = cdev_alloc(); // åˆ†é…å­—ç¬¦è®¾å¤‡
 		if(NULL==mpu6050.cdev){
 			printk(KERN_ERR "cdev_alloc error.");
 			ret = -ERESTART;
 			goto err0;
 		}
-		cdev_init(mpu6050.cdev,&fops); // ³õÊ¼»¯×Ö·ûÉè±¸
+		cdev_init(mpu6050.cdev,&fops); // åˆå§‹åŒ–å­—ç¬¦è®¾å¤‡
 		mpu6050.cdev->owner = THIS_MODULE;
-		ret = cdev_add(mpu6050.cdev,mpu6050.devno,COUNT); // ×¢²á×Ö·ûÉè±¸
+		ret = cdev_add(mpu6050.cdev,mpu6050.devno,COUNT); // æ³¨å†Œå­—ç¬¦è®¾å¤‡
 		if(ret){
 			printk(KERN_ERR "cdev_add error.\n");
 			goto err1;
 		}
-		mpu6050.pcls = class_create(THIS_MODULE,"mpu"); // ´´½¨Ò»¸öÀà
+		mpu6050.pcls = class_create(THIS_MODULE,"mpu"); // åˆ›å»ºä¸€ä¸ªç±»
 		if(IS_ERR(mpu6050.pcls)){
 			printk(KERN_ERR "class_create error.\n");
 			ret = PTR_ERR(mpu6050.pcls);
 			goto err2;
 		}
-		mpu6050.dev = device_create(mpu6050.pcls,NULL,mpu6050.devno,NULL,"mpu6050"); // ÔÚÀàÏÂÃæ´´½¨Ò»¸öÉè±¸
+		mpu6050.dev = device_create(mpu6050.pcls,NULL,mpu6050.devno,NULL,"mpu6050"); // åœ¨ç±»ä¸‹é¢åˆ›å»ºä¸€ä¸ªè®¾å¤‡
 		if(IS_ERR(mpu6050.dev)){
 			printk(KERN_ERR "device_create error.\n");
 			ret = PTR_ERR(mpu6050.dev);
 			goto err3;
 		}
-		// ³õÊ¼»¯mpu6050Ó²¼ş£¬Ê¹Ö®´¦ÓÚ¾ÍĞ÷×´Ì¬
+		// åˆå§‹åŒ–mpu6050ç¡¬ä»¶ï¼Œä½¿ä¹‹å¤„äºå°±ç»ªçŠ¶æ€
 		mpu6050.client = client;
 		
 		return 0;
@@ -293,52 +293,52 @@
 		return 0;
 	}
 
-	static const struct of_device_id of_mpu6050_table[]={ //ÉèÖÃcompatible£¬½øĞĞÉè±¸Ê÷Æ¥Åä
+	static const struct of_device_id of_mpu6050_table[]={ //è®¾ç½®compatibleï¼Œè¿›è¡Œè®¾å¤‡æ ‘åŒ¹é…
 		{.compatible="invensense,mpu6050",}, 
-		{/* Noting to be done */}, // ÉèÖÃÍ£Ö¹±êÖ¾
+		{/* Noting to be done */}, // è®¾ç½®åœæ­¢æ ‡å¿—
 
 	};
 
 	MODULE_DEVICE_TABLE(of, of_mpu6050_table);
 
 
-	static const struct i2c_device_id mpu6050_table[]={ //ÉèÖÃid_table±í£¬¼´Ê¹²»Ê¹ÓÃid_table
-										//½øĞĞÆ¥Åä£¬Ò²ĞèÒªÉèÖÃ£¬·ñÔò³ö´í
+	static const struct i2c_device_id mpu6050_table[]={ //è®¾ç½®id_tableè¡¨ï¼Œå³ä½¿ä¸ä½¿ç”¨id_table
+										//è¿›è¡ŒåŒ¹é…ï¼Œä¹Ÿéœ€è¦è®¾ç½®ï¼Œå¦åˆ™å‡ºé”™
 		{"mpu6050",0,},
 		{/* Nothing to be done */},
 		
 	};
 
 
-	static const struct i2c_driver mpu6050_drver={ // ÉèÖÃi2c_driver½á¹¹Ìå
+	static const struct i2c_driver mpu6050_drver={ // è®¾ç½®i2c_driverç»“æ„ä½“
 
 		.driver={
-			.name = "mpu6050", // Çı¶¯µÄÃû×Ö£¬Ò²¿ÉÓÃÓÚÆ¥Åä£¬ºÍ±ÜÃâÖØ¸´·¢Éú×¢²á
+			.name = "mpu6050", // é©±åŠ¨çš„åå­—ï¼Œä¹Ÿå¯ç”¨äºåŒ¹é…ï¼Œå’Œé¿å…é‡å¤å‘ç”Ÿæ³¨å†Œ
 			.owner = THIS_MODULE,
-			.of_match_table = of_mpu6050_table, // ¸³ÖµÉè±¸Ê÷Æ¥Åä±í
+			.of_match_table = of_mpu6050_table, // èµ‹å€¼è®¾å¤‡æ ‘åŒ¹é…è¡¨
 		},
-		.probe = mpu6050_probe,	// 	Æ¥Åä³É¹¦£¬½«µ÷ÓÃmpu6050_probeº¯Êı
-		.remove = mp6050_remove, // Çı¶¯·¢ÉúĞ¶ÔØ£¬½«µ÷ÓÃmp6050_removeº¯Êı
-		.id_table = &mpu6050_table, // ÄÚºËµÄÁíÍâÒ»ÖÖÆ¥Åä·½Ê½£¬id_tableÆ¥Åä±í
+		.probe = mpu6050_probe,	// 	åŒ¹é…æˆåŠŸï¼Œå°†è°ƒç”¨mpu6050_probeå‡½æ•°
+		.remove = mp6050_remove, // é©±åŠ¨å‘ç”Ÿå¸è½½ï¼Œå°†è°ƒç”¨mp6050_removeå‡½æ•°
+		.id_table = &mpu6050_table, // å†…æ ¸çš„å¦å¤–ä¸€ç§åŒ¹é…æ–¹å¼ï¼Œid_tableåŒ¹é…è¡¨
 
 	};
 
-	module_i2c_driver(mpu6050_drver);//×¢²áÇı¶¯
+	module_i2c_driver(mpu6050_drver);//æ³¨å†Œé©±åŠ¨
 
 	MODULE_LICENSE("GPL");
 
  /***************************************************************************************/
 	
-	Éè±¸Ê÷´úÂëµÄÊµÏÖ£º
+	è®¾å¤‡æ ‘ä»£ç çš„å®ç°ï¼š
 	
-			i2c@138B0000 {¡¡// ¶ÔIICÖ÷»ú¿ØÖÆÆ÷µÄÃèÊö£¬ÕâĞ©Êı¾İ±»IIC×ÜÏßÇı¶¯³ÌĞòÊ¹ÓÃ£¬Ò²¾ÍÊÇ³§¼ÒµÄÇı¶¯³ÌĞòÊ¹ÓÃ
+			i2c@138B0000 {ã€€// å¯¹IICä¸»æœºæ§åˆ¶å™¨çš„æè¿°ï¼Œè¿™äº›æ•°æ®è¢«IICæ€»çº¿é©±åŠ¨ç¨‹åºä½¿ç”¨ï¼Œä¹Ÿå°±æ˜¯å‚å®¶çš„é©±åŠ¨ç¨‹åºä½¿ç”¨
          samsung,i2c-sda-delay = <100>;
          samsung,i2c-max-bus-freq = <20000>;  // 20k
          pinctrl-0 = <&i2c5_bus>;
          pinctrl-names = "default";
-         status = "okay";   // ×´Ì¬¿ª¹Ø£¬Ê¹ÓÃÊ±Ò»¶¨Òª´ò¿ª
+         status = "okay";   // çŠ¶æ€å¼€å…³ï¼Œä½¿ç”¨æ—¶ä¸€å®šè¦æ‰“å¼€
  
-         mpu6050-3-axis@68 { // ×Ó½Úµã£¬±íÊ¾¹Ò½ÓÔÚÖ÷»ú¿ØÖÆÆ÷ÉÏ£¬±»i2c_coreºËĞÄÊ¹ÓÃ£¬Éú³Éstruct i2c_client½Úµã                                                                                      
+         mpu6050-3-axis@68 { // å­èŠ‚ç‚¹ï¼Œè¡¨ç¤ºæŒ‚æ¥åœ¨ä¸»æœºæ§åˆ¶å™¨ä¸Šï¼Œè¢«i2c_coreæ ¸å¿ƒä½¿ç”¨ï¼Œç”Ÿæˆstruct i2c_clientèŠ‚ç‚¹                                                                                      
              compatible ="invensense,mpu6050";
              reg = <0x68>;
              interrupt-parent = <&gpx3>;

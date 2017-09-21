@@ -1,0 +1,386 @@
+
+	字符设备驱动实现：
+	
+	Linux字符设备注册过程：
+		
+			int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count,const char *name) //动态获取设备号
+			cdev_alloc(); //分配一个字符设备
+			cdev_init(...); // 绑定字符设备和操作函数集合
+			cdev_add(...); // 注册字符设备结构体
+			// 实现内核的设备自动创建
+			class_create(...); //创建一个类
+			device_create(...); //在类下面创建设备
+	
+	// 字符设备的注册过程实际就是把字符设备结构体加入到内核双链表中
+	/*************************************************************************************************/
+		alloc_chrdev_region()
+		==>
+		__register_chrdev_region(0, baseminor, count, name);
+		==>
+			if (major == 0) { // 自动分配，major=0
+			for (i = ARRAY_SIZE(chrdevs)-1; i > 0; i--) {
+				if (chrdevs[i] == NULL)
+					break;
+			}
+
+			if (i == 0) {
+				ret = -EBUSY;
+				goto out;
+			}
+			major = i; 
+			ret = major;
+		}
+	// 遍历整个chrdevs数组，找到数组内容如果为空，则索引号位设备号。
+	/*************************************************************************************************/
+	struct cdev *cdev_alloc(void)
+	==>
+		struct cdev *p = kzalloc(sizeof(struct cdev), GFP_KERNEL);
+		if (p) {
+			INIT_LIST_HEAD(&p->list); // 初始化链表头
+			kobject_init(&p->kobj, &ktype_cdev_dynamic);// 初始化kobject对象
+		}
+		return p;
+	// 该函数实现对cdev的分配和对kobject对象的初始化
+	/*************************************************************************************************/
+	void cdev_init(struct cdev *cdev, const struct file_operations *fops)
+	==>
+		memset(cdev, 0, sizeof *cdev);
+		INIT_LIST_HEAD(&cdev->list);
+		kobject_init(&cdev->kobj, &ktype_cdev_default);
+		cdev->ops = fops;// 设置cdev的操作集合
+	/*************************************************************************************************/
+	int cdev_add(struct cdev *p, dev_t dev, unsigned count)
+	==>
+		p->dev = dev;
+		p->count = count;
+		kobj_map(cdev_map, dev, count, NULL, exact_match, exact_lock, p);
+	//cdev_map是一个全局变量 “static struct kobj_map *cdev_map;” exact_match 与 exact_lock 是回调函数
+	//该函数会把cdev保存到cdev_map散列表中
+	==>
+		unsigned n = MAJOR(dev + range - 1) - MAJOR(dev) + 1;
+		unsigned index = MAJOR(dev); // 获得散列表索引
+		unsigned i;
+		struct probe *p;
+
+	if (n > 255)
+		n = 255;
+		...
+		for (i = 0; i < n; i++, p++) { //设置 struct probe *p; 结构体
+			p->owner = module;
+			p->get = probe;
+			p->lock = lock;
+			p->dev = dev;
+			p->range = range;
+			p->data = data; // cdev结构体
+		}
+		for (i = 0, p -= n; i < n; i++, p++, index++) {
+			struct probe **s = &domain->probes[index % 255]; // 获得数组中的列开头
+			while (*s && (*s)->range < range)
+				s = &(*s)->next;	// 遍历到链表最后一个
+			p->next = *s;	
+			*s = p;	// 进行赋值
+		}
+		...
+	/*************************************************************************************************/
+	总结：
+			字符设备结构体的注册过程实际上就是：
+					1. 使用 struct probe 结构体包含 struct cdev 。
+					2. 把 struct probe 结构体加入到 cdev_map的散列表中。
+					
+	涉及的结构体：
+	
+		struct kobj_map {
+			struct probe {
+				struct probe *next;
+				dev_t dev;
+				unsigned long range;
+				struct module *owner;
+				kobj_probe_t *get;
+				int (*lock)(dev_t, void *);
+				void *data;
+			} *probes[255]; // 包含255个 struct probe 结构体数组，也就是字符设备最多255个主设备号
+			struct mutex *lock;
+		};
+			
+		struct probe {
+			struct probe *next;
+			dev_t dev;
+			unsigned long range;
+			struct module *owner;
+			kobj_probe_t *get;
+			int (*lock)(dev_t, void *);
+			void *data;	// 指向 struct cdev 结构体
+		} 
+	
+		struct cdev {
+			struct kobject kobj;
+			struct module *owner;
+			const struct file_operations *ops; // 指向操作函数集合
+			struct list_head list;
+			dev_t dev;
+			unsigned int count;
+	};
+		其中包含关系：
+			struct kobj_map
+				===>包含
+					struct probe
+						===>包含
+							struct cdev
+								===>
+									struct file_operations
+	/*************************************************************************************************/			 
+	
+	一个完整的led驱动实例：
+	
+	#include <linux/module.h>
+	#include <linux/kernel.h>
+	#include <linux/init.h>
+	#include <linux/cdev.h>
+	#include <linux/device.h>
+	#include <linux/fs.h>
+	#include <linux/wait.h>
+	#include <asm/io.h>
+	#include <asm/atomic.h>
+	#include <linux/slab.h>
+	#include <linux/sched.h>
+
+
+	#include "led_cmd.h"
+
+	#define GPFCON	0x56000050
+	#define GPFDAT	0x56000054
+	#define GPFPUD	0x56000058
+
+	struct gpio_resources {
+		unsigned long  con;
+		unsigned long  dat;
+		unsigned long  pud;
+	};
+
+	struct led{
+		dev_t devno;
+		int minor;
+		int count;
+		struct cdev *cdev;
+		struct class *cls;
+		struct device *device;
+		struct gpio_resources *gpf;
+		wait_queue_head_t wait_head;
+		atomic_t led_available;
+	};
+
+	static struct led g_led={
+		.led_available = ATOMIC_INIT(1),
+	};
+
+	static int led_on(int i)
+	{
+		switch(i)
+		{
+			case 1:
+				writel(readl(&g_led.gpf->dat)&(~(0x1<<4)),&g_led.gpf->dat);
+				break;
+			case 2:
+				writel(readl(&g_led.gpf->dat)&(~(0x1<<5)),&g_led.gpf->dat);
+				break;
+			case 3:
+				writel(readl(&g_led.gpf->dat)&(~(0x1<<6)),&g_led.gpf->dat);
+				break;
+			default:
+				break;
+		}
+
+		return 0;
+	}
+
+	static int led_off(int i)
+	{
+		switch(i)
+		{
+			case 1:
+				writel(readl(&g_led.gpf->dat)|(0x1<<4),&g_led.gpf->dat);
+				break;
+			case 2:
+				writel(readl(&g_led.gpf->dat)|(0x1<<5),&g_led.gpf->dat);
+				break;
+			case 3:
+				writel(readl(&g_led.gpf->dat)|(0x1<<6),&g_led.gpf->dat);
+				break;
+			default:
+				break;
+		}
+
+		return 0;
+	}
+
+	static int led_hw_init(struct led *led,int minor,int count,const struct file_operations *fops)
+	{
+		int ret;
+		led->minor = minor;
+		led->count = count;
+		ret = alloc_chrdev_region(&led->devno, led->minor, led->count,"led");
+		if(ret!=0){
+			printk(KERN_ERR "alloc_chrdev_region error.\n");
+			return ret;
+		}
+		led->cdev = cdev_alloc();
+		if(!led->cdev){
+			printk("cdev_alloc error.\n");
+			goto err1;
+		}
+
+		cdev_init(led->cdev,fops);
+		led->cdev->owner = THIS_MODULE;
+
+		ret = cdev_add(led->cdev,led->devno,led->count);
+		if(ret){
+			printk("cdev_add error.\n");
+			goto err2;
+		}
+
+		led->cls = class_create(THIS_MODULE, "led");
+		if(IS_ERR(led->cls)){
+			printk("class_create error.\n");
+			ret = PTR_ERR(led->cls);
+			goto err3;
+		}
+		led->device = device_create(led->cls,NULL,led->devno, NULL,"led");
+		if(IS_ERR(led->device)){
+			printk("device_create error,\n");
+			ret = PTR_ERR(led->device);
+			goto err4;
+		}
+		
+		led->gpf = ioremap(GPFCON, sizeof(struct gpio_resources));
+		if(!led->gpf){
+			printk("ioremap error.\n");
+			ret = -ERESTARTSYS;
+			goto err5;
+		}
+		// set GPFDAT 4 5 6 '1'
+		writel(readl(&led->gpf->dat)|(0x7<<4),&led->gpf->dat);
+
+		// set GPFCON
+		writel(readl(&led->gpf->con)|(0x15<<4),&led->gpf->dat);
+		
+		//	atomic_set(&led->led_available,1);
+		//led->led_available = ATOMIC_INIT(1); // 设置原子变量
+		init_waitqueue_head(&led->wait_head);
+		return 0;
+	err5:
+		device_destroy(led->cls, led->devno);
+	err4:
+		class_destroy(led->cls);
+	err3:
+		cdev_del(led->cdev);
+	err2:
+		kfree(led->cdev);
+	err1:
+		unregister_chrdev_region(led->devno, led->count);
+		return ret;
+
+	}
+
+	static void led_destroy(void)
+	{
+		writel(readl(&g_led.gpf->dat)|(0x7<<4),&g_led.gpf->dat);
+		iounmap(g_led.gpf);
+	}
+
+
+	static int led_is_available(void)
+	{
+		if(!atomic_dec_and_test(&g_led.led_available))
+		{
+			atomic_inc(&g_led.led_available);
+			return 0;
+		}
+
+		return 1;
+	}	
+
+	static int led_open(struct inode *inode, struct file *filep)
+	{
+
+		if(!atomic_dec_and_test(&g_led.led_available))
+		{
+			atomic_inc(&g_led.led_available);
+			if(filep->f_flags & O_NONBLOCK){
+				printk("led is unavailable.\n");
+				return -EBUSY;
+			}
+			wait_event_interruptible(g_led.wait_head, 1==led_is_available());
+		}
+		printk("led_open .\n");
+		return 0;
+	}
+
+
+	static long led_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+	{
+		switch(cmd)
+		{
+			case IOCTL_LED_ON:
+				led_on(arg);
+				break;
+			case IOCTL_LED_OFF:
+				led_off(arg);
+				break;
+			default:
+				break;
+		}
+		return 0;
+	}
+
+	static int led_release(struct inode *inode, struct file *filep)
+	{
+		atomic_inc(&g_led.led_available);
+		wake_up(&g_led.wait_head); //唤醒等待队列
+		return 0;
+	}
+
+
+
+	static const struct file_operations fops={
+		.owner = THIS_MODULE,
+		.open = led_open,
+		.release = led_release,
+		.unlocked_ioctl = led_ioctl,
+	};
+
+
+	static int __init led_init(void)
+	{
+		int ret;	
+		ret = led_hw_init(&g_led, 0, 1,&fops);
+		if(ret!=0){
+			printk("led_hw_init error.\n");
+			return ret;
+		}
+		return 0;
+	}
+
+	static void __exit led_exit(void)
+	{
+		
+		device_destroy(g_led.cls, g_led.devno);
+		class_destroy(g_led.cls);
+		cdev_del(g_led.cdev);
+		kfree(g_led.cdev);
+		unregister_chrdev_region(g_led.devno, g_led.count);
+		led_destroy();
+	}
+
+	module_init(led_init);
+	module_exit(led_exit);
+
+	MODULE_LICENSE("GPL");
+
+	/*************************************************************************************************/
+
+	用户空间到内核空间系统调用的流程：
+		1. 根据用户传递的设备名字，找到对应的设备inode号。
+		2. 根据inode号中的设备号找到对应的字符设备。
+		3. 调用字符设备对应的函数。
+
+
